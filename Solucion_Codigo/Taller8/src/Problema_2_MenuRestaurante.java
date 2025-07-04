@@ -1,55 +1,3 @@
-
-/**
- * En un restaurant se tiene diferentes tipos de menú para ofrecer a los
- * clientes. Una cuenta por pagar está compuesta por características como:
- * nombre del cliente, listado de todos las cartas(menú) solicitados por el
- * cliente, valor a cancelar total, subtotal, Iva.
- * 
- * Los tipos de menú del restaurant son:
- * 
- * Menú a la carta
- * 
- * nombre del plato
- * valor del menú
- * valor inicial del menú
- * valor de porción de guarnición
- * valor de bebida
- * porcentaje adicional por servicio en relación del valor inicial del menú
- * 
- * Menú del día
- * 
- * nombre del plato
- * valor del menú
- * valor inicial del menú
- * valor de postre
- * valor de bebida
- * 
- * Menú de niños
- * 
- * nombre del plato
- * valor del menú
- * valor inicial del menú
- * valor de porción de helado
- * valor de porción de pastel
- * 
- * Menú económico
- * 
- * nombre del plato
- * valor del menú
- * valor inicial del menú
- * porcentaje de descuento, en referencia al valor inicial del menú
- * 
- * Note
- * 
- * Para solucionar lo anterior se debe generar lo siguiente:
- * 
- * Un diagrama exclusivo que involucren las clases de tipo Menú (usar
- * polimorfismo)
- * Una solución en lenguaje de programación Java. Usar Polimorfismo en la
- * solución. Hacer uso del método toString() para presentar toda la información
- * posible del objeto (nombre del cliente, subtotal, iva, listado de todos los
- * menú, valor a cancelar a total.
- **/
 import java.util.ArrayList;
 
 public class Problema_2_MenuRestaurante {
@@ -72,12 +20,12 @@ public class Problema_2_MenuRestaurante {
         double iva = subtotal * 0.15;
         double total = subtotal + iva;
 
-        // Mostrar información
+        // Mostrar información usando String.format
         System.out.println(cliente);
-        System.out.println("Subtotal: " + subtotal);
-        System.out.println("IVA: " + iva);
-        System.out.println("Total a cancelar: " + total);
-        System.out.println("Gracias por su visita al restaurante!");
+        System.out.println(String.format("Subtotal: %.2f", subtotal));
+        System.out.println(String.format("IVA: %.2f", iva));
+        System.out.println(String.format("Total a cancelar: %.2f", total));
+        System.out.println(String.format("%s", "Gracias por su visita al restaurante!"));
     }
 }
 
@@ -96,8 +44,8 @@ abstract class Menu {
 
     @Override
     public String toString() {
-        return "Nombre del Plato: " + nombrePlato + ", Valor del Menú: " + valorMenu
-                + ", Valor Inicial del Menú: " + valorInicialMenu;
+        return String.format("Nombre del Plato: %s, Valor del Menú: %.2f, Valor Inicial del Menú: %.2f",
+                nombrePlato, valorMenu, valorInicialMenu);
     }
 }
 
@@ -122,9 +70,8 @@ class MenuCarta extends Menu {
 
     @Override
     public String toString() {
-        return super.toString() + ", Valor por Porción de Guarnición: " + valorPorcionGuarnicion
-                + ", Valor de bebida:  " + this.valorBebida + ", Porcentaje de servicio: " + this.porcentajeServicio
-                + "%";
+        return String.format("%s, Valor por Porción de Guarnición: %.2f, Valor de bebida: %.2f, Porcentaje de servicio: %d%%",
+                super.toString(), valorPorcionGuarnicion, valorBebida, (int)porcentajeServicio);
     }
 }
 
@@ -146,8 +93,8 @@ class MenuDia extends Menu {
 
     @Override
     public String toString() {
-        return super.toString() + ", Valor del Postre: " + this.valorPostre + ", Valor de la Bebida: "
-                + this.valorBebida;
+        return String.format("%s, Valor del Postre: %.2f, Valor de la Bebida: %.2f",
+                super.toString(), valorPostre, valorBebida);
     }
 }
 
@@ -169,8 +116,8 @@ class MenuNinos extends Menu {
 
     @Override
     public String toString() {
-        return super.toString() + ", Valor de Porción de Helado: " + this.valorPorcionHelado
-                + ", Valor de Porción de Pastel: " + this.valorPorcionPastel;
+        return String.format("%s, Valor de Porción de Helado: %.2f, Valor de Porción de Pastel: %.2f",
+                super.toString(), valorPorcionHelado, valorPorcionPastel);
     }
 }
 
@@ -189,7 +136,8 @@ class MenuEconomico extends Menu {
 
     @Override
     public String toString() {
-        return super.toString() + ", Porcentaje de Descuento: " + this.porcentajeDescuento + "%";
+        return String.format("%s, Porcentaje de Descuento: %.2f%%",
+                super.toString(), porcentajeDescuento);
     }
 }
 
@@ -226,7 +174,16 @@ class Cliente {
     }
 
     @Override
-    public String toString() { 
-        return String.format("Cuenta{nombreCliente= %s\n, menus= %s\n , subtotal= %s\n , iva= %s\n , total= %s\n}",nombreCliente,menus,subtotal,iva,total);
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Cuenta{\nnombreCliente= %s\n", nombreCliente));
+        sb.append("menus=\n");
+        for (Menu m : menus) {
+            sb.append(String.format("  %s\n", m.toString()));
+        }
+        sb.append(String.format("subtotal= %.2f\n", subtotal));
+        sb.append(String.format("iva= %.2f\n", iva));
+        sb.append(String.format("total= %.2f\n}", total));
+        return sb.toString();
     }
 }
