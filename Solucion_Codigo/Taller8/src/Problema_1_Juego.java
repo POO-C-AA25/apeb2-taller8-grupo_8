@@ -26,24 +26,17 @@
  *
  * Para solucionar lo anterior se debe generar lo siguiente:
  *
- * Un diagrama exclusivo que involucren las funcionalidades principales del
- * juego.
- * Una solución en lenguaje de programación Java. Usar Polimorfismo en la
- * solución.
+ * Un diagrama exclusivo que involucren las funcionalidades principales del juego.
+ * Una solución en lenguaje de programación Java. Usar Polimorfismo en la solución.
  * Clase de prueba/ejecutor, que demuestre la funcionalidad del juego.
  *
- * @author
+ * @author Daniel Irene
  */
 abstract class Personaje {
-<<<<<<< HEAD
-
-=======
->>>>>>> ca01b56aec0ee357fb67f9e1d445338c641ac751
     protected String nombre;
     protected int vida;
     protected int nivel;
     protected int experiencia;
-<<<<<<< HEAD
 
     public Personaje(String nombre, int vida) {
         this.nombre = nombre;
@@ -53,14 +46,11 @@ abstract class Personaje {
     }
 
     public abstract int atacar();
-
     public abstract int defender();
 
     public void recibirDanio(int danio) {
         vida -= danio;
-        if (vida < 0) {
-            vida = 0;
-        }
+        if (vida < 0) vida = 0;
     }
 
     public boolean estaVivo() {
@@ -91,7 +81,6 @@ abstract class Personaje {
 }
 
 class Guerrero extends Personaje {
-
     public Guerrero(String nombre) {
         super(nombre, 120);
     }
@@ -108,7 +97,6 @@ class Guerrero extends Personaje {
 }
 
 class Mago extends Personaje {
-
     public Mago(String nombre) {
         super(nombre, 80);
     }
@@ -125,7 +113,6 @@ class Mago extends Personaje {
 }
 
 class Arquero extends Personaje {
-
     public Arquero(String nombre) {
         super(nombre, 100);
     }
@@ -142,7 +129,6 @@ class Arquero extends Personaje {
 }
 
 class Combate {
-
     public static Personaje luchar(Personaje p1, Personaje p2) {
         System.out.println("¡Comienza la batalla entre " + p1.getNombre() + " y " + p2.getNombre() + "!");
         int ronda = 1;
@@ -164,140 +150,12 @@ class Combate {
 }
 
 public class Problema_1_Juego {
-
     public static void main(String[] args) {
         Personaje guerrero = new Guerrero("Thor");
         Personaje mago = new Mago("Merlín");
         Personaje arquero = new Arquero("Legolas");
 
         // Ejemplo de combate
-        Combate.luchar(guerrero, mago);
-        Combate.luchar(guerrero, arquero);
-        Combate.luchar(mago, arquero);
-=======
-
-    public Personaje(String nombre, int vida) {
-        this.nombre = nombre;
-        this.vida = vida;
-        this.nivel = 1;
-        this.experiencia = 0;
-    }
-
-    public abstract int atacar();
-
-    public abstract int defender();
-
-    public void recibirDanio(int danio) {
-        vida -= danio;
-        if (vida < 0)
-            vida = 0;
-    }
-
-    public boolean estaVivo() {
-        return vida > 0;
-    }
-
-    public void ganarExperiencia(int exp) {
-        experiencia += exp;
-        if (experiencia >= 100) {
-            subirNivel();
-            experiencia -= 100;
-        }
-    }
-
-    public void subirNivel() {
-        nivel++;
-        vida += 20;
-        System.out.println(nombre + " ha subido al nivel " + nivel + " y ahora tiene " + vida + " de vida.");
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public int getVida() {
-        return vida;
->>>>>>> ca01b56aec0ee357fb67f9e1d445338c641ac751
-    }
-}
-
-class Guerrero extends Personaje {
-    public Guerrero(String nombre) {
-        super(nombre, 120);
-    }
-
-    @Override
-    public int atacar() {
-        return 25 + (nivel * 3);
-    }
-
-    @Override
-    public int defender() {
-        return 15 + (nivel * 2);
-    }
-}
-
-class Mago extends Personaje {
-    public Mago(String nombre) {
-        super(nombre, 80);
-    }
-
-    @Override
-    public int atacar() {
-        return 35 + (nivel * 4);
-    }
-
-    @Override
-    public int defender() {
-        return 10 + (nivel * 2);
-    }
-}
-
-class Arquero extends Personaje {
-    public Arquero(String nombre) {
-        super(nombre, 1000);
-    }
-
-    @Override
-    public int atacar() {
-        return 20 + (nivel * 5);
-    }
-
-    @Override
-    public int defender() {
-        return 12 + (nivel * 2);
-    }
-}
-
-class Combate {
-    public static Personaje luchar(Personaje p1, Personaje p2) {
-        System.out.println("¡Comienza la batalla entre " + p1.getNombre() + " y " + p2.getNombre() + "!");
-        int ronda = 1;
-        while (p1.estaVivo() && p2.estaVivo()) {
-            System.out.println("\nRonda " + ronda);
-            int danio1 = Math.max(0, p1.atacar() - p2.defender());
-            int danio2 = Math.max(0, p2.atacar() - p1.defender());
-            p2.recibirDanio(danio1);
-            p1.recibirDanio(danio2);
-            System.out.println(p1.getNombre() + " inflige " + danio1 + " de daño. Vida de " + p2.getNombre() + ": "
-                    + p2.getVida());
-            System.out.println(p2.getNombre() + " inflige " + danio2 + " de daño. Vida de " + p1.getNombre() + ": "
-                    + p1.getVida());
-            ronda++;
-        }
-        Personaje ganador = p1.estaVivo() ? p1 : p2;
-        System.out.println("\n¡El ganador es " + ganador.getNombre() + "!");
-        ganador.ganarExperiencia(120);
-        return ganador;
-    }
-}
-
-public class Problema_1_Juego {
-    public static void main(String[] args) {
-        Personaje guerrero = new Guerrero("Thor");
-        Personaje mago = new Mago("Merlín");
-        Personaje arquero = new Arquero("Legolas");
-
         Combate.luchar(guerrero, mago);
         Combate.luchar(guerrero, arquero);
         Combate.luchar(mago, arquero);
