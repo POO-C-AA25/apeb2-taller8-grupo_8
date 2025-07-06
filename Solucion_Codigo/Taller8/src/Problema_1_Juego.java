@@ -30,7 +30,7 @@
  * Una solución en lenguaje de programación Java. Usar Polimorfismo en la solución.
  * Clase de prueba/ejecutor, que demuestre la funcionalidad del juego.
  *
- * @author Daniel Irene
+ * @author 
  */
 abstract class Personaje {
     protected String nombre;
@@ -155,7 +155,6 @@ public class Problema_1_Juego {
         Personaje mago = new Mago("Merlín");
         Personaje arquero = new Arquero("Legolas");
 
-        // Ejemplo de combate
         Combate.luchar(guerrero, mago);
         Combate.luchar(guerrero, arquero);
         Combate.luchar(mago, arquero);
