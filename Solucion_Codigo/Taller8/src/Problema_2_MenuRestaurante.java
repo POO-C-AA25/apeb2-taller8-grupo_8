@@ -49,36 +49,105 @@
  * solución. Hacer uso del método toString() para presentar toda la información
  * posible del objeto (nombre del cliente, subtotal, iva, listado de todos los
  * menú, valor a cancelar a total.
+ * 
+ * @author Daniel Irene
  **/
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Problema_2_MenuRestaurante {
     public static void main(String[] args) {
-        // Crear menús
-        Menu menuCarta = new MenuCarta("Plato a la carta", 20.0, 15.0, 3.0, 2.0, 10);
-        Menu menuDia = new MenuDia("Plato del día", 15.0, 12.0, 2.0, 1.5);
-        Menu menuNinos = new MenuNinos("Plato para niños", 10.0, 8.0, 1.5, 1.0);
-        Menu menuEconomico = new MenuEconomico("Plato económico", 12.0, 10.0, 5);
-
-        // Crear cliente y agregar menús a su pedido
+        Scanner sc = new Scanner(System.in);
         Cliente cliente = new Cliente("Juan Pérez");
-        cliente.agregarMenu(menuCarta);
-        cliente.agregarMenu(menuDia);
-        cliente.agregarMenu(menuNinos);
-        cliente.agregarMenu(menuEconomico);
 
-        // Calcular totales
+        boolean continuar = true;
+        while (continuar) {
+            System.out.println("\nSeleccione el tipo de menú a agregar:");
+            System.out.println("1. Menú a la carta");
+            System.out.println("2. Menú del día");
+            System.out.println("3. Menú de niños");
+            System.out.println("4. Menú económico");
+            System.out.println("0. Terminar pedido");
+            System.out.print("Opción: ");
+            int opcion = sc.nextInt();
+            sc.nextLine(); // limpiar buffer
+
+            switch (opcion) {
+                case 1:
+                    System.out.print("Nombre del plato: ");
+                    String nombreCarta = sc.nextLine();
+                    System.out.print("Valor del menú: ");
+                    double valorMenuCarta = sc.nextDouble();
+                    System.out.print("Valor inicial del menú: ");
+                    double valorInicialCarta = sc.nextDouble();
+                    System.out.print("Valor porción guarnición: ");
+                    double valorGuarnicion = sc.nextDouble();
+                    System.out.print("Valor bebida: ");
+                    double valorBebidaCarta = sc.nextDouble();
+                    System.out.print("Porcentaje servicio: ");
+                    int porcentajeServicio = sc.nextInt();
+                    cliente.agregarMenu(new MenuCarta(nombreCarta, valorMenuCarta, valorInicialCarta, valorGuarnicion,
+                            valorBebidaCarta, porcentajeServicio));
+                    break;
+                case 2:
+                    System.out.print("Nombre del plato: ");
+                    String nombreDia = sc.nextLine();
+                    System.out.print("Valor del menú: ");
+                    double valorMenuDia = sc.nextDouble();
+                    System.out.print("Valor inicial del menú: ");
+                    double valorInicialDia = sc.nextDouble();
+                    System.out.print("Valor postre: ");
+                    double valorPostre = sc.nextDouble();
+                    System.out.print("Valor bebida: ");
+                    double valorBebidaDia = sc.nextDouble();
+                    cliente.agregarMenu(
+                            new MenuDia(nombreDia, valorMenuDia, valorInicialDia, valorPostre, valorBebidaDia));
+                    break;
+                case 3:
+                    System.out.print("Nombre del plato: ");
+                    String nombreNinos = sc.nextLine();
+                    System.out.print("Valor del menú: ");
+                    double valorMenuNinos = sc.nextDouble();
+                    System.out.print("Valor inicial del menú: ");
+                    double valorInicialNinos = sc.nextDouble();
+                    System.out.print("Valor porción helado: ");
+                    double valorHelado = sc.nextDouble();
+                    System.out.print("Valor porción pastel: ");
+                    double valorPastel = sc.nextDouble();
+                    cliente.agregarMenu(
+                            new MenuNinos(nombreNinos, valorMenuNinos, valorInicialNinos, valorHelado, valorPastel));
+                    break;
+                case 4:
+                    System.out.print("Nombre del plato: ");
+                    String nombreEco = sc.nextLine();
+                    System.out.print("Valor del menú: ");
+                    double valorMenuEco = sc.nextDouble();
+                    System.out.print("Valor inicial del menú: ");
+                    double valorInicialEco = sc.nextDouble();
+                    System.out.print("Porcentaje descuento: ");
+                    double porcentajeDescuento = sc.nextDouble();
+                    cliente.agregarMenu(
+                            new MenuEconomico(nombreEco, valorMenuEco, valorInicialEco, porcentajeDescuento));
+                    break;
+                case 0:
+                    continuar = false;
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        }
+
         double subtotal = cliente.calcularSubtotal();
         double iva = subtotal * 0.15;
         double total = subtotal + iva;
 
-        // Mostrar información usando String.format
         System.out.println(cliente);
         System.out.println(String.format("Subtotal: %.2f", subtotal));
         System.out.println(String.format("IVA: %.2f", iva));
         System.out.println(String.format("Total a cancelar: %.2f", total));
         System.out.println(String.format("%s", "Gracias por su visita al restaurante!"));
+        sc.close();
     }
 }
 
