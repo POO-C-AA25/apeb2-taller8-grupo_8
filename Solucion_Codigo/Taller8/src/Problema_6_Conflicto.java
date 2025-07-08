@@ -38,6 +38,7 @@
  * seleccionadas con un proceso aleatorio/randomico.
  * Calcular las consecuencias del conflicto utilizando polimorfismo y la
  * implementación de cálculo de impacto.
+ * 
  * Consecuencias del conflicto:
  * Reducción del 5% de población por cada diferencia en los niveles de poder
  * militar.
@@ -62,20 +63,39 @@ import java.util.Random;
 
 public class Problema_6_Conflicto {
     public static void main(String[] args) {
-        // Crear naciones
-        List<Nacion> naciones = new ArrayList<>();
-        naciones.add(new NacionDesarrollada("USAA", 330_000_000, 2_000_000_000_000.0, 95, true,
+        SimuladorConflictos simulador = new SimuladorConflictos();
+        simulador.agregarNacion(new NacionDesarrollada("USAA", 330_000_000, 2_000_000_000_000.0, 95, true,
                 Arrays.asList("Ukrania", "Francia")));
-        naciones.add(new NacionDesarrollada("Germany", 83_000_000, 800_000_000_000.0, 85, true,
+        simulador.agregarNacion(new NacionDesarrollada("Germany", 83_000_000, 800_000_000_000.0, 85, true,
                 Arrays.asList("Francia", "USA")));
-        naciones.add(new NacionEnDesarrollo("Brazil", 210_000_000, 300_000_000_000.0, 60, Arrays.asList("Argentina")));
-        naciones.add(new NacionEnDesarrollo("India", 1_400_000_000, 500_000_000_000.0, 70, Arrays.asList("Russia")));
-        naciones.add(new NacionEnDesarrollo("Nigeria", 200_000_000, 100_000_000_000.0, 40, Arrays.asList()));
+        simulador.agregarNacion(
+                new NacionEnDesarrollo("Brazil", 210_000_000, 300_000_000_000.0, 60,
+                        Arrays.asList("Argentina", "Chile")));
+        simulador.agregarNacion(
+                new NacionEnDesarrollo("India", 1_400_000_000, 500_000_000_000.0, 70, Arrays.asList("Russia")));
+        simulador.agregarNacion(new NacionEnDesarrollo("Nigeria", 200_000_000, 100_000_000_000.0, 40, Arrays.asList()));
 
-        int conflictosSimulados = 0;
+        simulador.simularConflictos(3);
+        simulador.reporteFinal();
+    }
+}
+
+class SimuladorConflictos {
+    public List<Nacion> naciones;
+    public int conflictosSimulados;
+
+    public SimuladorConflictos() {
+        naciones = new ArrayList<>();
+        conflictosSimulados = 0;
+    }
+
+    public void agregarNacion(Nacion nacion) {
+        naciones.add(nacion);
+    }
+
+    public void simularConflictos(int cantidad) {
         Random rand = new Random();
-
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < cantidad; i++) {
             int idx1 = rand.nextInt(naciones.size());
             int idx2;
             do {
@@ -85,19 +105,13 @@ public class Problema_6_Conflicto {
             Nacion n1 = naciones.get(idx1);
             Nacion n2 = naciones.get(idx2);
 
-            System.out.println(String.format("\nConflicto #%d: %s vs %s", i + 1, n1.nombre, n2.nombre));
+            System.out.println(String.format("\nConflicto #%d: %s vs %s\n", i + 1, n1.nombre, n2.nombre));
             simularConflicto(n1, n2);
             conflictosSimulados++;
         }
-
-        System.out.println("\n--- REPORTE FINAL ---");
-        for (Nacion n : naciones) {
-            System.out.println(n);
-        }
-        System.out.println(String.format("Total de conflictos simulados: %d", conflictosSimulados));
     }
 
-    public static void simularConflicto(Nacion n1, Nacion n2) {
+    public void simularConflicto(Nacion n1, Nacion n2) {
         n1.estadoConflicto = true;
         n2.estadoConflicto = true;
 
@@ -130,6 +144,15 @@ public class Problema_6_Conflicto {
         n1.estadoConflicto = false;
         n2.estadoConflicto = false;
     }
+
+    public void reporteFinal() {
+        System.out.println("\n--- REPORTE FINAL ---");
+        for (Nacion n : naciones) {
+            System.out.println(n);
+        }
+        System.out.println(String.format("Total de conflictos simulados: %d\n", conflictosSimulados));
+    }
+
 }
 
 abstract class Nacion {
@@ -194,5 +217,11 @@ class NacionEnDesarrollo extends Nacion {
         int impacto = (int) (poderMilitar * recursosPorHabitante * 1000) + aliadosBono;
         impacto = Math.max(1, Math.min(impacto, 100));
         return impacto;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s Recursos limitados: %.2f por habitante", super.toString(),
+                recursos / (habitantes == 0 ? 1 : habitantes));
     }
 }

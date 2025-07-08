@@ -26,11 +26,13 @@
  *
  * Para solucionar lo anterior se debe generar lo siguiente:
  *
- * Un diagrama exclusivo que involucren las funcionalidades principales del juego.
- * Una solución en lenguaje de programación Java. Usar Polimorfismo en la solución.
+ * Un diagrama exclusivo que involucren las funcionalidades principales del
+ * juego.
+ * Una solución en lenguaje de programación Java. Usar Polimorfismo en la
+ * solución.
  * Clase de prueba/ejecutor, que demuestre la funcionalidad del juego.
  *
- * @author 
+ * @author
  */
 abstract class Personaje {
     protected String nombre;
@@ -46,11 +48,13 @@ abstract class Personaje {
     }
 
     public abstract int atacar();
+
     public abstract int defender();
 
     public void recibirDanio(int danio) {
         vida -= danio;
-        if (vida < 0) vida = 0;
+        if (vida < 0)
+            vida = 0;
     }
 
     public boolean estaVivo() {
@@ -138,8 +142,10 @@ class Combate {
             int danio2 = Math.max(0, p2.atacar() - p1.defender());
             p2.recibirDanio(danio1);
             p1.recibirDanio(danio2);
-            System.out.println(p1.getNombre() + " inflige " + danio1 + " de daño. Vida de " + p2.getNombre() + ": " + p2.getVida());
-            System.out.println(p2.getNombre() + " inflige " + danio2 + " de daño. Vida de " + p1.getNombre() + ": " + p1.getVida());
+            System.out.println(p1.getNombre() + " inflige " + danio1 + " de daño. Vida de " + p2.getNombre() + ": "
+                    + p2.getVida());
+            System.out.println(p2.getNombre() + " inflige " + danio2 + " de daño. Vida de " + p1.getNombre() + ": "
+                    + p1.getVida());
             ronda++;
         }
         Personaje ganador = p1.estaVivo() ? p1 : p2;
